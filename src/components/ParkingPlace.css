@@ -1,0 +1,31 @@
+.parking-place {
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 6px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.parking-place.occupied {
+  background-color: tomato;
+  color: white;
+}
+
+.parking-place.bounce {
+  animation: bounce 0.3s;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+  

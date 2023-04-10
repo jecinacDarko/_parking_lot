@@ -1,0 +1,31 @@
+.parking-lot {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  grid-template-rows: repeat(6, 80px);
+  gap: 4px;
+  border: 1px solid var(--main-border);
+  margin: 64px 128px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
+  padding:5px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  grid-template-rows: repeat(6, 80px);
+  gap: 5px;
+}
+
+.r2 {
+  grid-area: r2;
+  height: 80px;
+}
+
+.r3, .r4 {
+  grid-area: auto / 3 / auto / 14;
+}
+
+.r5 {
+  grid-area: r5;
+  height: 80px;
+}

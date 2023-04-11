@@ -12,12 +12,16 @@ const ParkingLot = () => {
     );
   };
 
+  let placeNumberCounter = 1;
+
   const gridItems = Array.from({ length: 6 * 16 }, (_, index) => {
     const row = Math.floor(index / 16) + 1;
     const col = (index % 16) + 1;
 
     if (isValidPlace(row, col)) {
-      const placeNumber = (row - 1) * 16 + col - (row > 2 && row < 5 ? 2 : 0);
+      const placeNumber = placeNumberCounter;
+      placeNumberCounter++;
+
       return (
         <div
           className="parking-place-wrapper"

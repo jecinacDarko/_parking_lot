@@ -3,43 +3,61 @@ import ParkingPlace from './ParkingPlace';
 import './ParkingLot.css';
 
 const ParkingLot = () => {
-  const isValidPlace = (row, col) => {
-    return !(
-      row === 2 ||
-      row === 5 ||
-      (row === 3 && (col <= 2 || col >= 14)) ||
-      (row === 4 && (col <= 2 || col >= 14))
+  const parkingPlaces = Array.from({ length: 54 }, (place, i) => i + 1);
+
+  const TopRow = (start, end) => {
+    return parkingPlaces.slice(start, end).map((placeNumber) => (
+      <ParkingPlace key={placeNumber} number={placeNumber} />
+    ));
+  };
+
+  const InnerRow1 = (start, end) => {
+    return (
+      <>
+        <div className="blank" />
+        <div className="blank" />
+        {parkingPlaces.slice(start, end).map((placeNumber) => (
+          <ParkingPlace key={placeNumber} number={placeNumber} />
+        ))}
+        <div className="blank" />
+        <div className="blank" />
+      </>
     );
   };
 
-  let placeNumberCounter = 1;
+  const InnerRow2 = (start, end) => {
+    return (
+      <>
+        <div className="blank" />
+        <div className="blank" />
+        {parkingPlaces.slice(start, end).map((placeNumber) => (
+          <ParkingPlace key={placeNumber} number={placeNumber} />
+        ))}
+        <div className="blank" />
+        <div className="blank" />
+      </>
+    );
+  };
 
-  const gridItems = Array.from({ length: 6 * 16 }, (_, index) => {
-    const row = Math.floor(index / 16) + 1;
-    const col = (index % 16) + 1;
+  const BottomRow = (start, end) => {
+    return parkingPlaces.slice(start, end).map((placeNumber) => (
+      <ParkingPlace key={placeNumber} number={placeNumber} />
+    ));
+  };
 
-    if (isValidPlace(row, col)) {
-      const placeNumber = placeNumberCounter;
-      placeNumberCounter++;
-
-      return (
-        <div
-          className="parking-place-wrapper"
-          key={`${row}-${col}`}
-          style={{
-            gridColumn: col,
-            gridRow: row,
-          }}
-        >
-          <ParkingPlace number={placeNumber} />
-        </div>
-      );
-    }
-
-    return null;
-  }).filter(Boolean);
-
-  return <div className="parking-lot">{gridItems}</div>;
+  return (
+    <>
+      <div className="parking-lot">
+        <div className="top-row">{TopRow(0, 16)}</div>
+        <div className="separator" />
+        <div className="inner-row first">{InnerRow1(16, 27)}</div>
+        <div className="inner-row">{InnerRow2(27, 38)}</div>
+        <div className="separator" />
+        <div className="bottom-row">{BottomRow(38, 54)}</div>
+        <p>Click on the parking place to park the car!</p>
+     </div>
+    </>
+  );
 };
 
 export default ParkingLot;

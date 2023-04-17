@@ -1,31 +1,41 @@
 .parking-lot {
   display: grid;
-  grid-template-columns: repeat(16, 1fr);
-  grid-template-rows: repeat(6, 80px);
+  grid-template-rows: 80px 100px 80px 80px 100px 80px;
   gap: 4px;
   border: 1px solid var(--main-border);
   margin: 64px 128px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
-  padding:5px;
+  padding: 5px;
+  text-align: center;
 }
 
-.grid-container {
+.parking-lot p {
+  padding:30px;
+}
+
+.top-row,
+.bottom-row {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+}
+
+.inner-row {
   display: grid;
-  grid-template-columns: repeat(16, 1fr);
-  grid-template-rows: repeat(6, 80px);
-  gap: 5px;
+  grid-template-columns: repeat(15, 1fr);
+  gap:3px;
 }
 
-.r2 {
-  grid-area: r2;
-  height: 80px;
+.separator {
+  height: 100px;
 }
 
-.r3, .r4 {
-  grid-area: auto / 3 / auto / 14;
+.blank {
+  flex-grow: 1;
+  flex-basis: 0;
 }
 
-.r5 {
-  grid-area: r5;
-  height: 80px;
+.ParkingPlace {
+  flex-grow: 1;
+  flex-basis: 0;
 }

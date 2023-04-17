@@ -1,14 +1,25 @@
 import React, { useState, useCallback } from 'react';
 import './ParkingPlace.css';
+import { generateBarcode, getCurrentTimestamp, saveTicket } from '../utils/getTicket';
 
 const ParkingPlace = ({ number }) => {
   const [isOccupied, setIsOccupied] = useState(false);
   const [bounce, setBounce] = useState(false);
 
   const handleClick = useCallback(() => {
-    setIsOccupied(!isOccupied);
+    const newIsOccupied = !isOccupied;
+    setIsOccupied(newIsOccupied);
     setBounce(true);
-    console.log(` ${isOccupied ? 'Goodbye!' : 'Welcome!'}`);
+
+    if (!newIsOccupied) {
+      console.log('Goodbye!');
+    } else {
+      const barcode = generateBarcode();
+      const timestamp = getCurrentTimestamp();
+      const ticket = { number, barcode, timestamp };
+      saveTicket(ticket);
+      console.log(`Welcome! Your ticket barcode is: ${barcode}`);
+    }
 
     setTimeout(() => {
       setBounce(false);

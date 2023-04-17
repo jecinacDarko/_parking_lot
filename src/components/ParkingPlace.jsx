@@ -6,9 +6,10 @@ const ParkingPlace = ({ number }) => {
   const [bounce, setBounce] = useState(false);
 
   const handleClick = useCallback(() => {
-    setIsOccupied(!isOccupied);
+    const newIsOccupied = !isOccupied;
+    setIsOccupied(newIsOccupied);
     setBounce(true);
-    console.log(` ${isOccupied ? 'Goodbye!' : 'Welcome!'}`);
+    console.log(`${newIsOccupied ? 'Welcome!' : 'Goodbye!'}`);
 
     setTimeout(() => {
       setBounce(false);

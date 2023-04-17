@@ -4,6 +4,7 @@ import ParkingLot from './components/ParkingLot';
 const App = () => {
   return (
     <div className="App"> 
+      <ParkingLot />
     </div>
   )
 }

@@ -1,4 +1,6 @@
-.parking-place {
+.parking-spot {
+  display: flex;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
   background-color: #fff;
@@ -9,12 +11,24 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 6px;
 }
 
-.parking-place.occupied {
+.occupied {
   background-color: tomato;
   color: white;
+  font-size: 8px;
 }
 
-.parking-place.bounce {
+.barcode-container {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  width:100%;
+  height:100%;
+  color: white;
+  font-size: 10px;
+}
+
+.parking-spot.bounce {
   animation: bounce 0.3s;
 }
 

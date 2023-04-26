@@ -12,7 +12,7 @@ export class TicketService {
       return JSON.parse(value, this.parseDateReviver)
     })
   }
-  
+
   // Retrieves ticket by barcode
   getTicket(barcode) {
     return JSON.parse(localStorage.getItem(barcode), this.parseDateReviver) || null;

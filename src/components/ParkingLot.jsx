@@ -1,6 +1,5 @@
 import React from 'react';
 import ParkingSpot from './ParkingSpot';
-import PaymentComponent from './PaymentComponent';
 import './ParkingLot.css';
 
 const ParkingLot = () => {

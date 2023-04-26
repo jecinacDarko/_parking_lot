@@ -2,11 +2,11 @@ import { TicketService } from "./TicketService.js";
 import { Receipt } from "../models/Receipt.js";
 
 export class PaymentService {
-  static shared = new PaymentService();
+  static shared = new PaymentService()
 
-  ticketSrvc = TicketService.shared;
+  ticketSrvc = TicketService.shared
 
-  pricePerHour = 2.0;
+  pricePerHour = 2.0
 
   // TASK 2
   calculatePrice(barcode) {
@@ -27,9 +27,13 @@ export class PaymentService {
     }
 
     //time difference in milliseconds converted to hours
-    const timeDifferenceInMilliseconds = Math.max(new Date() - calculationDate, 0)
+    const timeDifferenceInMilliseconds = Math.max(new Date() - calculationDate, 0);
     const timeDifferenceInMinutes = timeDifferenceInMilliseconds / (1000 * 60);
     const timeDifferenceInHours = timeDifferenceInMilliseconds / (1000 * 60 * 60);
+
+    if (lastReceipt !== null && timeDifferenceInMinutes < 15) {
+      return [0, lastReceipt]
+    }
 
     // calculate price 
     const startedHours = Math.ceil(timeDifferenceInHours);
@@ -58,6 +62,15 @@ export class PaymentService {
   }
 
   getAvailablePaymentMethods() {
-    return["CASH", "Credit Card", "Debit Card"]
+    return ["CASH", "Credit Card", "Debit Card"]
+  }
+
+  getTicketState(barcode) {
+    let [price, receipt] = this.calculatePrice(barcode)
+    if (receipt) {
+      return 'PAID'
+    } else {
+      return 'UNPAID'
+    }
   }
 }

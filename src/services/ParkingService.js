@@ -1,73 +1,91 @@
-import { Ticket } from "../models/Ticket.js";
-import { TicketService } from "./TicketService.js";
-import { PaymentService } from "./PaymentService.js";
+import { Ticket } from "../models/Ticket.js"
+import { TicketService } from "./TicketService.js"
+import { PaymentService } from "./PaymentService.js"
 
 export class ParkingService {
-  static shared = new ParkingService();
-  ticketSrvc = TicketService.shared;
-  paymentSrvc = PaymentService.shared;
+    static shared = new ParkingService()
+    ticketSrvc = TicketService.shared
+    paymentSrvc = PaymentService.shared
 
-  maxParkingSpots = 54;
+    maxParkingSpots = 54
 
-  getTicket(parkingSpot) {
-    const tickets = this.ticketSrvc.getAllTickets;
-    const currentlyTakenParkingSpots = tickets.length;
+    getTicket(parkingSpot) {
+        const tickets = this.ticketSrvc.getAllTickets
+        const currentlyTakenParkingSpots = tickets.length
+        if (currentlyTakenParkingSpots >= this.maxParkingSpots) {
+            // Max spots reached
+            return null
+        }
 
-    if (currentlyTakenParkingSpots >= this.maxParkingSpots) {
-      // Max spots reached
-      return null;
+        const newBarcode = this.ticketSrvc.generateBarcode()
+        const ticket = new Ticket(newBarcode)
+        ticket.entryDate = new Date()
+        ticket.parkingSpot = parkingSpot
+        this.ticketSrvc.saveTicket(ticket)
+
+        this.triggerListeners()
+
+        return ticket
     }
 
-    const newBarcode = this.ticketSrvc.generateBarcode();
-    const ticket = new Ticket(newBarcode);
-    ticket.entryDate = new Date();
-    ticket.parkingSpot = parkingSpot;
-    this.ticketSrvc.saveTicket(ticket);
+    fetchTicketByParkingSpot(parkingSpot) {
+        const tickets = this.ticketSrvc.getAllTickets()
+        return tickets.find((ticket) => ticket.parkingSpot === parkingSpot) || null
+    }
 
-    this.triggerListeners();
+    calculatePrice(barcode) {
+        return this.paymentSrvc.calculatePrice(barcode)
+    }
 
-    return ticket;
-  }
+    getAvailablePaymentMethods() {
+        return this.paymentSrvc.getAvailablePaymentMethods()
+    }
 
-  fetchTicketByParkingSpot(parkingSpot) {
-    const tickets = this.ticketSrvc.getAllTickets();
-    return tickets.find((ticket) => ticket.parkingSpot === parkingSpot) || null;
-  }
+    getUnpaidTickets() {
+        const tickets = this.ticketSrvc.getAllTickets()
+        return tickets.filter((ticket) => this.getTicketState(ticket.barcode) === 'UNPAID')
+    }
 
-  calculatePrice(barcode) {
-    return this.paymentSrvc.calculatePrice(barcode);
-  }
+    payTicket(barcode, paymentMethod) {
+        const ticket = this.paymentSrvc.payTicket(barcode, paymentMethod)
+        this.triggerListeners()
+        return ticket
+    }
 
-  getAvailablePaymentMethods() {
-    return this.paymentSrvc.getAvailablePaymentMethods();
-  }
+    getTicketState(barcode) {
+        return this.paymentSrvc.getTicketState(barcode)
+    }
 
-  getUnpaidTickets() {
-    const tickets = this.ticketSrvc.getAllTickets();
-    return tickets.filter((ticket) => ticket.receipts.length === 0);
-  }
+    scanTicket(barcode) {
+        const tickets = this.ticketSrvc.getAllTickets()
+        const ticket = tickets.find((ticket) => ticket.barcode === barcode) || null
 
-  payTicket(barcode, paymentMethod) {
-    const ticket = this.paymentSrvc.payTicket(barcode, paymentMethod);
-    this.triggerListeners();
-    return ticket;
-  }
+        if (this.getTicketState(ticket.barcode) === 'UNPAID') {
+            throw new Error('You cannot exit. You must pay the ticket first.')
+        }
 
-  // PUBSUB
+        this.ticketSrvc.deleteTicket(ticket.barcode)
 
-  listeners = [];
+        this.triggerListeners()
 
-  subscribe(listener) {
-    this.listeners.push(listener);
+        return null /// We are assuming that there is no need to keep the ticket around when exiting the parking lot.
+    }
 
-    // Return a function that removes the listener from the list when called
-    return () => {
-      this.listeners = this.listeners.filter((l) => l !== listener);
-    };
-  }
+    // PUBSUB
 
-  // Method that triggers the listeners when there is a change
-  triggerListeners() {
-    this.listeners.forEach((listener) => listener());
-  }
+    listeners = [];
+  
+    subscribe(listener) {
+      this.listeners.push(listener);
+  
+      // Return a function that removes the listener from the list when called
+      return () => {
+        this.listeners = this.listeners.filter((l) => l !== listener);
+      };
+    }
+
+    // Method that triggers the listeners when there is a change
+    triggerListeners() {
+      this.listeners.forEach((listener) => listener());
+    }
 }

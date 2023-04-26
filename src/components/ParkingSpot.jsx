@@ -5,6 +5,7 @@ import { ParkingServiceContext } from "../App.jsx";
 
 const ParkingSpot = ({ number }) => {
   const parkingService = useContext(ParkingServiceContext);
+
   const [ticket, setTicket] = useState(parkingService.fetchTicketByParkingSpot(number));
   const [bounce, setBounce] = useState(false);
 
@@ -14,7 +15,11 @@ const ParkingSpot = ({ number }) => {
     if (ticket === null) {
       setTicket(parkingService.getTicket(number))
     } else {
-      setTicket(null)
+      if (parkingService.getTicketState(ticket.barcode) === 'UNPAID') {
+        alert('You must pay to exit')
+      } else {
+        setTicket(parkingService.scanTicket(ticket.barcode))
+      }
     }
   });
 
@@ -31,6 +36,6 @@ const ParkingSpot = ({ number }) => {
       {ticket === null && <div className="parking-spot-number">{number}</div>}
     </div>
   );
-}    
+}
 
 export default ParkingSpot;

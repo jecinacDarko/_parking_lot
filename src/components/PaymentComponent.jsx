@@ -12,13 +12,10 @@ const PaymentComponent = () => {
     const updateOnParkingSrvcStateChange = () => {
       setUnpaidTickets(parkingService.getUnpaidTickets())
     };
-  
-    // Call the updateOnParkingSrvcStateChange function initially
+
     updateOnParkingSrvcStateChange();
 
     const unsubscribe = parkingService.subscribe(updateOnParkingSrvcStateChange);
-  
-    // Cleanup the subscription when the component unmounts
     return () => {
       unsubscribe();
     };

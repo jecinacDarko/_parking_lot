@@ -1,13 +1,14 @@
 import React from 'react';
-import ParkingPlace from './ParkingPlace';
+import ParkingSpot from './ParkingSpot';
+import PaymentComponent from './PaymentComponent';
 import './ParkingLot.css';
 
 const ParkingLot = () => {
-  const parkingPlaces = Array.from({ length: 54 }, (place, i) => i + 1);
+  const parkingSpots = Array.from({ length: 54 }, (place, i) => i + 1);
 
   const TopRow = (start, end) => {
-    return parkingPlaces.slice(start, end).map((placeNumber) => (
-      <ParkingPlace key={placeNumber} number={placeNumber} />
+    return parkingSpots.slice(start, end).map((placeNumber) => (
+      <ParkingSpot key={placeNumber} number={placeNumber} />
     ));
   };
 
@@ -16,8 +17,8 @@ const ParkingLot = () => {
       <>
         <div className="blank" />
         <div className="blank" />
-        {parkingPlaces.slice(start, end).map((placeNumber) => (
-          <ParkingPlace key={placeNumber} number={placeNumber} />
+        {parkingSpots.slice(start, end).map((placeNumber) => (
+          <ParkingSpot key={placeNumber} number={placeNumber} />
         ))}
         <div className="blank" />
         <div className="blank" />
@@ -30,8 +31,8 @@ const ParkingLot = () => {
       <>
         <div className="blank" />
         <div className="blank" />
-        {parkingPlaces.slice(start, end).map((placeNumber) => (
-          <ParkingPlace key={placeNumber} number={placeNumber} />
+        {parkingSpots.slice(start, end).map((placeNumber) => (
+          <ParkingSpot key={placeNumber} number={placeNumber} />
         ))}
         <div className="blank" />
         <div className="blank" />
@@ -40,8 +41,8 @@ const ParkingLot = () => {
   };
 
   const BottomRow = (start, end) => {
-    return parkingPlaces.slice(start, end).map((placeNumber) => (
-      <ParkingPlace key={placeNumber} number={placeNumber} />
+    return parkingSpots.slice(start, end).map((placeNumber) => (
+      <ParkingSpot key={placeNumber} number={placeNumber} />
     ));
   };
 

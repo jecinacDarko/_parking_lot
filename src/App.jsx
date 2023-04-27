@@ -8,13 +8,12 @@ export const ParkingServiceContext = createContext();
 
 const App = () => {
   const parkingService = ParkingService.shared;
-
   return (
     <ParkingServiceContext.Provider value={parkingService}>
-        <div className="App">
-          <ParkingLot />
-          <PaymentComponent />
-        </div>
+      <div className="App">
+        <ParkingLot />
+        <PaymentComponent />
+      </div>
     </ParkingServiceContext.Provider>
   );
 };

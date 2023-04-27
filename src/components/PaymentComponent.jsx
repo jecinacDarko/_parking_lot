@@ -4,13 +4,15 @@ import { ParkingServiceContext } from "../App";
 const PaymentComponent = () => {
   const parkingService = useContext(ParkingServiceContext);
   const [unpaidTickets, setUnpaidTickets] = useState([])
+  const [freeSpaces, setFreeSpaces] = useState(0)
   const [paymentMethod, setPaymentMethod] = useState('')
   const [selectedTicketBarcode, setSelectedTicketBarcode] = useState('')
 
   useEffect(() => {
-    // Define a function to update the unpaidTickets state with the current unpaid tickets
+
     const updateOnParkingSrvcStateChange = () => {
       setUnpaidTickets(parkingService.getUnpaidTickets())
+      setFreeSpaces(parkingService.getFreeSpaces())
     };
 
     updateOnParkingSrvcStateChange();
@@ -37,7 +39,11 @@ const PaymentComponent = () => {
           </option>
         ))}
       </select>
-      <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+
+      <select 
+        value={paymentMethod} 
+        onChange={(e) => setPaymentMethod(e.target.value)}
+      >
         <option value="">Choose payment method</option>
         {parkingService.getAvailablePaymentMethods().map((paymentMethod, index) => (
           <option key={index} value={paymentMethod}>
@@ -45,14 +51,15 @@ const PaymentComponent = () => {
           </option>
         ))}
       </select>
+
       <button onClick={handlePay} disabled={!selectedTicketBarcode || !paymentMethod}>Pay Ticket</button>
-      <h3>Unpaid Tickets {unpaidTickets.length}</h3>
+      <h3>Unpaid Tickets {unpaidTickets.length} Free Spaces: {freeSpaces} </h3>
       <div>
-      {unpaidTickets.map((ticket, index) => (
-        <div key={index}>
-          Barcode: {ticket.barcode} - price:
-          ${parkingService.calculatePrice(ticket.barcode)}
-        </div>
+        {unpaidTickets.map((ticket, index) => (
+          <div key={index}>
+            Barcode: {ticket.barcode} - price:
+            ${parkingService.calculatePrice(ticket.barcode)}
+          </div>
       ))}
       </div>
     </div>

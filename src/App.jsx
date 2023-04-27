@@ -5,6 +5,7 @@ import { createContext } from "react";
 import { ParkingService } from "./services/ParkingService";
 
 export const ParkingServiceContext = createContext();
+export const TicketServiceContext = createContext();
 
 const App = () => {
   const parkingService = ParkingService.shared;

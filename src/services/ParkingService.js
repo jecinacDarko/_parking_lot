@@ -1,91 +1,70 @@
-import { Ticket } from "../models/Ticket.js"
-import { TicketService } from "./TicketService.js"
-import { PaymentService } from "./PaymentService.js"
+import { Ticket } from "../models/Ticket.js";
+import { TicketService } from "./TicketService.js";
+import { PaymentService } from "./PaymentService.js";
 
 export class ParkingService {
-    static shared = new ParkingService()
-    ticketSrvc = TicketService.shared
-    paymentSrvc = PaymentService.shared
+  static shared = new ParkingService();
 
-    maxParkingSpots = 54
+  ticketSrvc = TicketService.shared;
+  paymentSrvc = PaymentService.shared;
+  maxParkingSpots = 54;
 
-    getTicket(parkingSpot) {
-        const tickets = this.ticketSrvc.getAllTickets
-        const currentlyTakenParkingSpots = tickets.length
-        if (currentlyTakenParkingSpots >= this.maxParkingSpots) {
-            // Max spots reached
-            return null
-        }
+  getTicket = (parkingSpot) => {
+    const tickets = this.ticketSrvc.getAllTickets;
+    const currentlyTakenParkingSpots = tickets.length;
+    if (currentlyTakenParkingSpots >= this.maxParkingSpots) return null;
+    const ticket = new Ticket(this.ticketSrvc.generateBarcode());
+    ticket.entryDate = new Date();
+    ticket.parkingSpot = parkingSpot;
+    this.ticketSrvc.saveTicket(ticket);
+    this.triggerListeners();
+    return ticket;
+  };
 
-        const newBarcode = this.ticketSrvc.generateBarcode()
-        const ticket = new Ticket(newBarcode)
-        ticket.entryDate = new Date()
-        ticket.parkingSpot = parkingSpot
-        this.ticketSrvc.saveTicket(ticket)
+	scanTicket = (barcode) => {
+    const ticket = this.ticketSrvc.getAllTickets().find((t) => t.barcode === barcode);
+    if (!ticket || this.getTicketState(ticket.barcode) === "UNPAID") throw new Error("Ticket not paid.");
+    this.ticketSrvc.deleteTicket(ticket.barcode);
+    this.triggerListeners();
+    return null;
+	};
 
-        this.triggerListeners()
+  fetchTicketByParkingSpot = (parkingSpot) => {
+    const tickets = this.ticketSrvc.getAllTickets();
+    return tickets.find((ticket) => ticket.parkingSpot === parkingSpot) || null;
+  };
 
-        return ticket
-    }
+  calculatePrice = (barcode) => this.paymentSrvc.calculatePrice(barcode);
 
-    fetchTicketByParkingSpot(parkingSpot) {
-        const tickets = this.ticketSrvc.getAllTickets()
-        return tickets.find((ticket) => ticket.parkingSpot === parkingSpot) || null
-    }
+	payTicket = (barcode, paymentMethod) => {
+    const ticket = this.paymentSrvc.payTicket(barcode, paymentMethod);
+    this.triggerListeners();
+    return ticket;
+  };
 
-    calculatePrice(barcode) {
-        return this.paymentSrvc.calculatePrice(barcode)
-    }
+	getTicketState = (barcode) => this.paymentSrvc.getTicketState(barcode);
+	getFreeSpaces = () => this.maxParkingSpots - this.ticketSrvc.getAllTickets().length;
+  getAvailablePaymentMethods = () => this.paymentSrvc.getAvailablePaymentMethods();
 
-    getAvailablePaymentMethods() {
-        return this.paymentSrvc.getAvailablePaymentMethods()
-    }
 
-    getUnpaidTickets() {
-        const tickets = this.ticketSrvc.getAllTickets()
-        return tickets.filter((ticket) => this.getTicketState(ticket.barcode) === 'UNPAID')
-    }
+  getUnpaidTickets = () => {
+    const tickets = this.ticketSrvc.getAllTickets();
+    return tickets.filter((ticket) => this.getTicketState(ticket.barcode) === "UNPAID");
+  };
 
-    payTicket(barcode, paymentMethod) {
-        const ticket = this.paymentSrvc.payTicket(barcode, paymentMethod)
-        this.triggerListeners()
-        return ticket
-    }
+  getTicketForParkingSpot = (number) =>
+    this.ticketSrvc.getAllTickets().find((ticket) => ticket.parkingSpot === number) || null;
 
-    getTicketState(barcode) {
-        return this.paymentSrvc.getTicketState(barcode)
-    }
+		
+  // Subscribe to parking service events
+  subscribe = (listener) => {
+    this.listeners.push(listener);
+    return () => {
+      this.listeners = this.listeners.filter((l) => l !== listener);
+    };
+  };
 
-    scanTicket(barcode) {
-        const tickets = this.ticketSrvc.getAllTickets()
-        const ticket = tickets.find((ticket) => ticket.barcode === barcode) || null
+  triggerListeners = () => this.listeners.forEach((listener) => listener());
 
-        if (this.getTicketState(ticket.barcode) === 'UNPAID') {
-            throw new Error('You cannot exit. You must pay the ticket first.')
-        }
-
-        this.ticketSrvc.deleteTicket(ticket.barcode)
-
-        this.triggerListeners()
-
-        return null /// We are assuming that there is no need to keep the ticket around when exiting the parking lot.
-    }
-
-    // PUBSUB
-
-    listeners = [];
-  
-    subscribe(listener) {
-      this.listeners.push(listener);
-  
-      // Return a function that removes the listener from the list when called
-      return () => {
-        this.listeners = this.listeners.filter((l) => l !== listener);
-      };
-    }
-
-    // Method that triggers the listeners when there is a change
-    triggerListeners() {
-      this.listeners.forEach((listener) => listener());
-    }
+  listeners = [];
 }

@@ -1,5 +1,5 @@
 export class TicketService {
-  static shared = new TicketService()
+  static shared = new TicketService();
 
   generateBarcode() {
     return Math.random().toString().slice(2, 18);
@@ -7,8 +7,8 @@ export class TicketService {
 
   getAllTickets() {
     return Object.entries(localStorage).map(([key, value]) => {
-      return JSON.parse(value, this.parseDateReviver)
-    })
+      return JSON.parse(value, this.parseDateReviver);
+    });
   }
 
   getTicket(barcode) {
@@ -20,7 +20,7 @@ export class TicketService {
   }
 
   deleteTicket(barcode) {
-    localStorage.removeItem(barcode)
+    localStorage.removeItem(barcode);
   }
 
   // Date parser function

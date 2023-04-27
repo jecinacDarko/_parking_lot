@@ -1,5 +1,5 @@
-import { TicketService } from "./TicketService.js";
-import { Receipt } from "../models/Receipt.js";
+import { TicketService } from './TicketService.js';
+import { Receipt } from '../models/Receipt.js';
 
 export class PaymentService {
   static shared = new PaymentService();
@@ -9,11 +9,9 @@ export class PaymentService {
   calculatePrice(barcode) {
     const ticket = this.ticketSrvc.getTicket(barcode);
     if (!ticket) {
-      console.error('Ticket not found!');
-      return -1;
+      return null;
     }
 
-    // Calculate time difference 
     let calculationDate = ticket.entryDate;
     let lastReceipt = null;
     if (ticket.receipts.length > 0) {
@@ -21,16 +19,14 @@ export class PaymentService {
       calculationDate = lastReceipt.paymentDate;
     }
 
-    // Time difference in milliseconds converted to hours
     const timeDifferenceInMilliseconds = Math.max(new Date() - calculationDate, 0);
     const timeDifferenceInMinutes = timeDifferenceInMilliseconds / (1000 * 60);
     const timeDifferenceInHours = timeDifferenceInMilliseconds / (1000 * 60 * 60);
-    
+
     if (lastReceipt !== null && timeDifferenceInMinutes < 15) {
       return [0, lastReceipt];
     }
 
-    // Calculate price 
     const startedHours = Math.ceil(timeDifferenceInHours);
     const price = startedHours * this.pricePerHour;
     return [price, lastReceipt];
@@ -44,26 +40,30 @@ export class PaymentService {
     }
     ticket.receipts.push(
       new Receipt(
-        paymentMethod, 
-        new Date(), 
+        paymentMethod,
+        new Date(),
         price
       )
-    )
+    );
     this.ticketSrvc.saveTicket(ticket);
     return ticket;
   }
 
   getTicketState(barcode) {
-    let [price, receipt] = this.calculatePrice(barcode);
-    if (receipt) {
-      return 'PAID';
+    const result = this.calculatePrice(barcode);
+    if (result !== null) {
+      let [price, receipt] = result;
+      if (receipt) {
+        return "PAID";
+      } else {
+        return "UNPAID";
+      }
     } else {
-      return 'UNPAID';
+      return null;
     }
   }
 
   getAvailablePaymentMethods() {
-    return ["CASH", "Credit Card", "Debit Card"];
+    return ['CASH', 'Credit Card', 'Debit Card'];
   }
-  
-};
+}

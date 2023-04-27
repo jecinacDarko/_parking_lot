@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { ParkingServiceContext } from '../App';
+import './PaymentComponent.css';
 
 const PaymentComponent = () => {
   const parkingService = useContext(ParkingServiceContext);
@@ -30,26 +31,31 @@ const PaymentComponent = () => {
   };
 
   return (
-    <div>
+    <div className="payment-component">
       <h2>Payment Component</h2>
-      <select value={selectedTicketBarcode} onChange={(e) => setSelectedTicketBarcode(e.target.value)}>
+      <select className="select"
+        value={selectedTicketBarcode} onChange={(e) => setSelectedTicketBarcode(e.target.value)}>
         <option value="">Select a ticket to pay</option>
         {unpaidTickets.map((ticket, index) => (
-          <option key={index} value={ticket.barcode}>
-            {ticket.barcode} {parkingService.calculatePrice(ticket.barcode)}
+          <option 
+            key={index} 
+            value={ticket.barcode}>
+            {ticket.barcode} 
+            {parkingService.calculatePrice(ticket.barcode)}
           </option>
         ))}
       </select>
-      <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+      <select className="select" value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
         <option value="">Choose payment method</option>
         {parkingService.getAvailablePaymentMethods().map((paymentMethod, index) => (
-          <option key={index} value={paymentMethod}>
+          <option 
+            key={index} value={paymentMethod}>
             {paymentMethod}
           </option>
         ))}
       </select>
       <button onClick={handlePay} disabled={!selectedTicketBarcode || !paymentMethod}>Pay Ticket</button>
-      <h3>Unpaid Tickets {unpaidTickets.length} Free Spaces: {freeSpaces} </h3>
+      <h3>Unpaid Tickets {unpaidTickets.length} </h3>
       <div>
         {unpaidTickets.map((ticket, index) => (
           <div key={index}>

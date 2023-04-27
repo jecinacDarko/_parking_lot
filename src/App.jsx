@@ -1,6 +1,6 @@
 import React from 'react';
 import ParkingLot from './components/ParkingLot';
-import PaymentComponent from './components/PaymentComponent';
+import Operations from './components/Operations';
 import { createContext } from "react";
 import { ParkingService } from "./services/ParkingService";
 
@@ -12,7 +12,7 @@ const App = () => {
     <ParkingServiceContext.Provider value={parkingService}>
       <div className="App">
         <ParkingLot />
-        <PaymentComponent />
+        <Operations />
       </div>
     </ParkingServiceContext.Provider>
   );

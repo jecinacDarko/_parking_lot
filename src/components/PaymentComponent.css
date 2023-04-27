@@ -1,6 +1,24 @@
-.pay-service {
-    display: block;
-    width: 200px;
-    height: 200px;
-    background-color:olive;
-  }
+.payment-component{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color:olive;
+  width: 300px;
+  height: 300px;
+  color: #ffff;
+  border-radius: 5px;
+}
+
+.select {
+  width: 90%;
+  height: 30px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.btn {
+  border-radius:10px;
+  height:10%;
+  width:30%;
+}

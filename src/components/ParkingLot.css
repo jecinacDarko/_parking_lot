@@ -1,12 +1,9 @@
 .parking-lot {
   display: grid;
-  grid-template-rows: 80px 100px 80px 80px 100px 80px;
-  gap: 4px;
-  border: 1px solid var(--main-border);
-  margin: 64px 128px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
-  padding: 5px;
+  grid-template-rows: 150px 150px 150px 150px 150px 150px;
   text-align: center;
+  min-width: fit-content;
+  height: 100vh;
 }
 
 .parking-lot p {
@@ -17,17 +14,18 @@
 .bottom-row {
   display: flex;
   justify-content: center;
-  gap: 3px;
+  height:150px;
 }
 
 .inner-row {
   display: grid;
   grid-template-columns: repeat(15, 1fr);
-  gap:3px;
+  height: 150px;
 }
 
 .separator {
-  height: 100px;
+  height: 150px;
+  position: relative;
 }
 
 .blank {
@@ -39,3 +37,4 @@
   flex-grow: 1;
   flex-basis: 0;
 }
+

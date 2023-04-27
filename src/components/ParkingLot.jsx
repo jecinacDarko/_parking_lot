@@ -14,7 +14,7 @@ const ParkingLot = () => {
   const InnerRow1 = (start, end) => {
     return (
       <>
-        <div className='blank' />
+        <div className='blank-top' />
         <div className='blank' />
         {parkingSpots.slice(start, end).map((placeNumber) => (
           <ParkingSpot key={placeNumber} number={placeNumber} />
@@ -50,11 +50,10 @@ const ParkingLot = () => {
       <div className='parking-lot'>
         <div className='top-row'>{TopRow(0, 16)}</div>
         <div className='separator' />
-        <div className='inner-row first'>{InnerRow1(16, 27)}</div>
+        <div className='inner-row'>{InnerRow1(16, 27)}</div>
         <div className='inner-row'>{InnerRow2(27, 38)}</div>
         <div className='separator' />
         <div className='bottom-row'>{BottomRow(38, 54)}</div>
-        <p>Click on the parking place to park the car!</p>
      </div>
     </>
   );

@@ -32,7 +32,7 @@ const PaymentComponent = () => {
 
   return (
     <div className="payment-component">
-      <h2>Payment Component</h2>
+      <p>Parking Device</p>
       <select className="select"
         value={selectedTicketBarcode} onChange={(e) => setSelectedTicketBarcode(e.target.value)}>
         <option value="">Select a ticket to pay</option>
@@ -55,15 +55,15 @@ const PaymentComponent = () => {
         ))}
       </select>
       <button onClick={handlePay} disabled={!selectedTicketBarcode || !paymentMethod}>Pay Ticket</button>
-      <h3>Unpaid Tickets {unpaidTickets.length} </h3>
-      <div>
+      <p>Unpaid Tickets: {unpaidTickets.length} </p>
+      {/* <div>
         {unpaidTickets.map((ticket, index) => (
           <div key={index}>
             Barcode: {ticket.barcode} - price:
             {parkingService.calculatePrice(ticket.barcode)}
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

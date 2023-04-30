@@ -3,21 +3,18 @@
   flex-direction: column;
 	justify-content: center;
   align-items: center;
-  background-color: cadetblue;
-  width: 300px;
-  height: 300px;
+  background-color:rgb(33, 98, 128);
+  width: 150px;
+  height: 150px;
   color: #ffff;
   border-radius: 5px;
+  font-size:20px;
+  position: relative;
+  left: 30px;
 }
-.counter-numbers {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  background-color:white;
-  height: 50px;
-  width: 50px;
-  border-radius: 10px;
-  color: black;
 
+.counter p {
+  margin: 0;
+  padding: 10px;
+  margin-top: -20px;
 }

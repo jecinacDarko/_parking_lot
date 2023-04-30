@@ -9,25 +9,32 @@
   align-items: center;
   color: #000;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  overflow: hidden;
 }
 
 .occupied {
-  background-color: tomato;
+  background-color: rgb(43, 137, 95);
   color: white;
   font-size: 8px;
+}
+
+.paid {
+  background-color: rgb(231, 172, 34);
+  color: black;
 }
 
 .barcode-container {
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items:center;
-  width:100%;
-  height:100%;
+  align-items: center;
+  width: 100%;
+  height: 100%;
   color: white;
   font-size: 10px;
 }
-
+5
 .parking-spot.bounce {
   animation: bounce 0.3s;
 }

@@ -6,10 +6,6 @@
   height: 100vh;
 }
 
-.parking-lot p {
-  padding:30px;
-}
-
 .top-row,
 .bottom-row {
   display: flex;

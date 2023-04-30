@@ -1,5 +1,7 @@
 import React from 'react';
 import ParkingSpot from './ParkingSpot';
+import PaymentComponent from './PaymentComponent';
+import Counter from './Counter';
 import './ParkingLot.css';
 
 const ParkingLot = () => {
@@ -19,8 +21,7 @@ const ParkingLot = () => {
         {parkingSpots.slice(start, end).map((placeNumber) => (
           <ParkingSpot key={placeNumber} number={placeNumber} />
         ))}
-        <div className='blank' />
-        <div className='blank' />
+        <PaymentComponent />
       </>
     );
   };
@@ -33,8 +34,7 @@ const ParkingLot = () => {
         {parkingSpots.slice(start, end).map((placeNumber) => (
           <ParkingSpot key={placeNumber} number={placeNumber} />
         ))}
-        <div className='blank' />
-        <div className='blank' />
+        <Counter />
       </>
     );
   };

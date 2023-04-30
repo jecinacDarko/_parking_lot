@@ -69,14 +69,17 @@ export class ParkingService {
     return this.paymentSrvc.getAvailablePaymentMethods();
   }
 
-  // PUBSUB
+  getPaymentInfo(barcode) {
+    return this.paymentSrvc.getPaymentInfo(barcode);
+  }
 
+  // PUBSUB
   listeners = [];
 
   subscribe(listener) {
     this.listeners.push(listener);
 
-    // Return a function that removes the listener from the list when called
+  // Return a function that removes the listener from the list when called
     return () => {
       this.listeners = this.listeners.filter((l) => l !== listener);
     };

@@ -6,8 +6,13 @@ export class PaymentService {
   ticketSrvc = TicketService.shared;
   pricePerHour = 2.0;
 
+  getTicket(barcode) {
+    const tickets = this.ticketSrvc.getAllTickets();
+    return tickets.find((ticket) => ticket.barcode === barcode);
+  }
+
   calculatePrice(barcode) {
-    const ticket = this.ticketSrvc.getTicket(barcode);
+    const ticket = this.getTicket(barcode);
     if (!ticket) {
       return null;
     }
@@ -34,7 +39,7 @@ export class PaymentService {
 
   payTicket(barcode, paymentMethod) {
     const [price, lastReceipt] = this.calculatePrice(barcode);
-    const ticket = this.ticketSrvc.getTicket(barcode);
+    const ticket = this.getTicket(barcode);
     if (price === 0 || lastReceipt !== null) {
       return ticket;
     }
@@ -61,6 +66,18 @@ export class PaymentService {
     } else {
       return null;
     }
+  }
+
+  getPaymentInfo(barcode) {
+    const ticket = this.getTicket(barcode);
+    if (ticket && ticket.receipts.length > 0) {
+      const lastReceipt = ticket.receipts[ticket.receipts.length - 1];
+      return {
+        paymentMethod: lastReceipt.paymentMethod,
+        paidAmount: lastReceipt.amount,
+      };
+    }
+    return null;
   }
 
   getAvailablePaymentMethods() {

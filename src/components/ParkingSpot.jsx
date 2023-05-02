@@ -6,7 +6,7 @@ const ParkingSpot = ({ number }) => {
   const parkingService = useContext(ParkingServiceContext);
 
   const [ticket, setTicket] = useState(parkingService.getTicketForParkingSpot(number));
-  const [ticketState, setTicketState] = useState('UNPAID'); // Set initial value to 'UNPAID'
+  const [ticketState, setTicketState] = useState('UNPAID');
   const [bounce, setBounce] = useState(false);
   const paymentInfo = ticket?.receipts?.length > 0 ? ticket.receipts[ticket.receipts.length - 1] : null;
 
@@ -30,7 +30,6 @@ const ParkingSpot = ({ number }) => {
 
   const handleTicketCreation = () => {
     !ticket && setTicket(parkingService.getTicket(number));
-    // Set the initial value of ticketState to 'UNPAID'
     !ticket && setTicketState('UNPAID');
   };
 

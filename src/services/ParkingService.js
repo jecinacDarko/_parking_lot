@@ -9,12 +9,10 @@ export class ParkingService {
   maxParkingSpots = 54;
   timer;
 
-  // Set up a recurring timer to trigger listeners every 3 seconds, ensuring the UI remains up-to-date 
-  // with the current parking service state (paid/unpaid status of tickets).
   constructor() {
     this.timer = setInterval(() => {
       this.triggerListeners();
-    }, 3000);
+    }, 500);
   }
 
   getTicket(parkingSpot) {

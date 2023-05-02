@@ -6,7 +6,7 @@ const ParkingSpot = ({ number }) => {
   const parkingService = useContext(ParkingServiceContext);
 
   const [ticket, setTicket] = useState(parkingService.getTicketForParkingSpot(number));
-  const [ticketState, setTicketState] = useState(parkingService.getTicketState(ticket?.barcode));
+  const [ticketState, setTicketState] = useState('UNPAID'); // Set initial value to 'UNPAID'
   const [bounce, setBounce] = useState(false);
   const paymentInfo = ticket?.receipts?.length > 0 ? ticket.receipts[ticket.receipts.length - 1] : null;
 
@@ -30,6 +30,8 @@ const ParkingSpot = ({ number }) => {
 
   const handleTicketCreation = () => {
     !ticket && setTicket(parkingService.getTicket(number));
+    // Set the initial value of ticketState to 'UNPAID'
+    !ticket && setTicketState('UNPAID');
   };
 
   const handleTicketScan = () => {
@@ -63,7 +65,7 @@ const ParkingSpot = ({ number }) => {
               Unpaid ticket
             </p>
           ) : (
-              <p> Last payment method: {paymentInfo?.paymentMethod} </p>
+              <p> Payment method: {paymentInfo?.paymentMethod} </p>
           )}
         </div>
       ) : (

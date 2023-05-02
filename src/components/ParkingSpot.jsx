@@ -26,18 +26,25 @@ const ParkingSpot = ({ number }) => {
     };
   }, [number, parkingService]);
 
+  const handleBounce = () => setBounce(true);
+
+  const handleTicketCreation = () => {
+    !ticket && setTicket(parkingService.getTicket(number));
+  };
+
+  const handleTicketScan = () => {
+    const ticketState = parkingService.getTicketState(ticket.barcode);
+    ticketState === 'UNPAID'
+      ? alert('You must pay to exit')
+      : setTicket(parkingService.scanTicket(ticket.barcode));
+  };
+
   const handleClick = useCallback(() => {
-    setBounce(true);
-    if (ticket === null) {
-      setTicket(parkingService.getTicket(number));
-    } else {
-      if (parkingService.getTicketState(ticket.barcode) === 'UNPAID') {
-        alert('You must pay to exit');
-      } else {
-        setTicket(parkingService.scanTicket(ticket.barcode));
-      }
-    }
+    handleBounce();
+    handleTicketCreation();
+    ticket && handleTicketScan();
   });
+
 
   const parkingSpotClass = () => {
     if (ticket === null) return 'parking-spot';
@@ -48,22 +55,19 @@ const ParkingSpot = ({ number }) => {
   return (
     <div className={`${parkingSpotClass()}${bounce ? ' bounce' : ''}`} onClick={handleClick}>
       {ticket !== null && ticket.barcode !== null ? (
-        <div className='barcode-container'>
+        <div className='text-container'>
           <h2>Place no: {number}</h2>
-          <p>Ticket id: {ticket.barcode}</p>
-          {ticketState === 'UNPAID' && <p>Parking started at: {ticket.entryDate.toLocaleString()}</p>}
-          <p>Status: {ticketState}</p>
-          {ticketState === 'PAID' && (
+          <p>Ticket id: </p>
+          <span style={{ fontSize: '8px', width: '100%' }}>{ticket.barcode}</span>
+          {ticketState === 'UNPAID' ? (
+            <p>Parking started at: {ticket.entryDate.toLocaleString()}</p>
+          ) : (
             <>
               <p>Current price: 0</p>
-              {paymentInfo && (
-                <>
-                  <p>Payment method: {paymentInfo.paymentMethod}</p>
-                  <p>Paid amount: {paymentInfo.paidAmount}</p>
-                </>
-              )}
+              <p>Payment method: {paymentInfo?.paymentMethod}</p>
             </>
           )}
+          <p>Status: {ticketState}</p>
         </div>
       ) : (
         <div className='parking-spot-number'>{number}</div>

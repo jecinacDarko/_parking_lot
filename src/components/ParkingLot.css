@@ -3,7 +3,7 @@
   grid-template-rows: 150px 150px 150px 150px 150px 150px;
   text-align: center;
   min-width: fit-content;
-  height: 100vh;
+  min-width:600px;
 }
 
 .top-row,

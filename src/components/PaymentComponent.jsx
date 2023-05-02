@@ -40,8 +40,8 @@ const PaymentComponent = () => {
           <option 
             key={index} 
             value={ticket.barcode}>
-            {ticket.barcode} 
-            {parkingService.calculatePrice(ticket.barcode)}
+            Ticked:{ticket.barcode}
+            Price:{parkingService.calculatePrice(ticket.barcode)}$
           </option>
         ))}
       </select>
@@ -56,14 +56,6 @@ const PaymentComponent = () => {
       </select>
       <button onClick={handlePay} disabled={!selectedTicketBarcode || !paymentMethod}>Pay Ticket</button>
       <p>Unpaid Tickets: {unpaidTickets.length} </p>
-      {/* <div>
-        {unpaidTickets.map((ticket, index) => (
-          <div key={index}>
-            Barcode: {ticket.barcode} - price:
-            {parkingService.calculatePrice(ticket.barcode)}
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 };

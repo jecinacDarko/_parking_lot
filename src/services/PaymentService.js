@@ -84,3 +84,5 @@ export class PaymentService {
     return ['CASH', 'Credit Card', 'Debit Card'];
   }
 }
+
+window.paymentService = PaymentService.shared;

@@ -4,44 +4,56 @@
   height: 100%;
   width: 100%;
   background-color: #fff;
-  display: flex;
   justify-content: center;
   align-items: center;
-  color: #000;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px;
   overflow: hidden;
-}
-
-.occupied {
-  background-color: rgb(43, 137, 95);
-  color: white;
   font-size: 8px;
 }
 
-.paid {
-  background-color: rgb(231, 172, 34);
-  color: black;
+.occupied {
+  color: #fff;
+  background-color: rgb(33, 98, 128);
 }
 
-.barcode-container {
-  box-sizing: border-box;
+.paid {
+  background-color: rgb(43, 137, 95);
+  box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px;
+}
+
+.occupied,
+.paid {
+  transition: transform 0.4s ease-in-out;
+  border-radius: 5px;
+}
+
+.occupied:hover,
+.paid:hover {
+  transform: scale(1.3);
+  box-shadow: rgba(99, 99, 99, 0.5) 0 8px 24px;
+  z-index: 1;
+  transition: transform 0.3s ease-in-out;
+}
+
+.text-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  color: white;
-  font-size: 10px;
+  width: fit-content;
+  color: #fff;
 }
-5
+
+.text-container span {
+  font-size: 5px;
+}
+
 .parking-spot.bounce {
   animation: bounce 0.3s;
 }
 
 @keyframes bounce {
-  0%,
-  100% {
+  0%, 100% {
     transform: scale(1);
   }
   50% {

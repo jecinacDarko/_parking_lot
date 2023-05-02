@@ -34,3 +34,5 @@ export class TicketService {
     return value;
   }
 }
+
+window.ticketService = TicketService.shared;

@@ -1,20 +1,19 @@
 .counter {
-	display: flex;
+  display: flex;
   flex-direction: column;
-	justify-content: center;
+  justify-content: center;
   align-items: center;
-  background-color:rgb(33, 98, 128);
+  background-color: rgb(33, 98, 128);
   width: 150px;
   height: 150px;
-  color: #ffff;
+  color: #fff;
   border-radius: 5px;
-  font-size:20px;
+  font-size: 20px;
   position: relative;
   left: 30px;
 }
 
 .counter p {
-  margin: 0;
-  padding: 10px;
-  margin-top: -20px;
+  margin: 10px 0 0;
+  padding: 10px 0;
 }

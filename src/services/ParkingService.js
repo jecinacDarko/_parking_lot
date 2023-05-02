@@ -90,3 +90,5 @@ export class ParkingService {
     this.listeners.forEach((listener) => listener());
   }
 }
+
+window.parkingService = ParkingService.shared;

@@ -45,7 +45,6 @@ const ParkingSpot = ({ number }) => {
     ticket && handleTicketScan();
   });
 
-
   const parkingSpotClass = () => {
     if (ticket === null) return 'parking-spot';
     if (ticketState === 'PAID') return 'parking-spot paid';
@@ -56,18 +55,16 @@ const ParkingSpot = ({ number }) => {
     <div className={`${parkingSpotClass()}${bounce ? ' bounce' : ''}`} onClick={handleClick}>
       {ticket !== null && ticket.barcode !== null ? (
         <div className='text-container'>
-          <h2>Place no: {number}</h2>
-          <p>Ticket id: </p>
-          <span style={{ fontSize: '8px', width: '100%' }}>{ticket.barcode}</span>
+          <h2>Spot {number}</h2>
+          Ticket barcode: {ticket.barcode}
+          <h1>${parkingService.calculatePrice(ticket.barcode)[0]}</h1>
           {ticketState === 'UNPAID' ? (
-            <p>Parking started at: {ticket.entryDate.toLocaleString()}</p>
+            <p>
+              Unpaid ticket
+            </p>
           ) : (
-            <>
-              <p>Current price: 0</p>
-              <p>Payment method: {paymentInfo?.paymentMethod}</p>
-            </>
+              <p> Last payment method: {paymentInfo?.paymentMethod} </p>
           )}
-          <p>Status: {ticketState}</p>
         </div>
       ) : (
         <div className='parking-spot-number'>{number}</div>

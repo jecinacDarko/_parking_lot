@@ -7,6 +7,15 @@ export class ParkingService {
   ticketSrvc = TicketService.shared;
   paymentSrvc = PaymentService.shared;
   maxParkingSpots = 54;
+  timer;
+
+  // Set up a recurring timer to trigger listeners every 3 seconds, ensuring the UI remains up-to-date 
+  // with the current parking service state (paid/unpaid status of tickets).
+  constructor() {
+    this.timer = setInterval(() => {
+      this.triggerListeners();
+    }, 3000);
+  }
 
   getTicket(parkingSpot) {
     const tickets = this.ticketSrvc.getAllTickets();
@@ -76,16 +85,18 @@ export class ParkingService {
   // PUBSUB
   listeners = [];
 
+  // Subscribe to state changes in ParkingService by adding a listener
+  // Returns a function that can be called to unsubscribe the listener
   subscribe(listener) {
     this.listeners.push(listener);
 
-  // Return a function that removes the listener from the list when called
+    // Return a function that removes the listener from the list when called
     return () => {
       this.listeners = this.listeners.filter((l) => l !== listener);
     };
   }
 
-  // Method that triggers the listeners when there is a change
+  // Trigger all subscribed listeners when there is a change in ParkingService state
   triggerListeners() {
     this.listeners.forEach((listener) => listener());
   }

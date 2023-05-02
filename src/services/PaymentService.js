@@ -5,6 +5,7 @@ export class PaymentService {
   static shared = new PaymentService();
   ticketSrvc = TicketService.shared;
   pricePerHour = 2.0;
+  paymentGracePeriodInMinutes = 15
 
   getTicket(barcode) {
     const tickets = this.ticketSrvc.getAllTickets();
@@ -28,7 +29,7 @@ export class PaymentService {
     const timeDifferenceInMinutes = timeDifferenceInMilliseconds / (1000 * 60);
     const timeDifferenceInHours = timeDifferenceInMilliseconds / (1000 * 60 * 60);
 
-    if (lastReceipt !== null && timeDifferenceInMinutes < 15) {
+    if (lastReceipt !== null && timeDifferenceInMinutes < this.paymentGracePeriodInMinutes) {
       return [0, lastReceipt];
     }
 
@@ -40,7 +41,7 @@ export class PaymentService {
   payTicket(barcode, paymentMethod) {
     const [price, lastReceipt] = this.calculatePrice(barcode);
     const ticket = this.getTicket(barcode);
-    if (price === 0 || lastReceipt !== null) {
+    if (price === 0) {
       return ticket;
     }
     ticket.receipts.push(
@@ -56,15 +57,14 @@ export class PaymentService {
 
   getTicketState(barcode) {
     const result = this.calculatePrice(barcode);
-    if (result !== null) {
-      let [price, receipt] = result;
-      if (receipt) {
-        return "PAID";
-      } else {
-        return "UNPAID";
-      }
+    if (result === null) {
+      return null
+    }
+    let [price, _] = result;
+    if (price === 0) {
+      return "PAID";
     } else {
-      return null;
+      return "UNPAID";
     }
   }
 

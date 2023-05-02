@@ -6,9 +6,10 @@ export class TicketService {
   }
 
   getAllTickets() {
-    return Object.entries(localStorage).map(([key, value]) => {
+    const tickets = Object.entries(localStorage).map(([key, value]) => {
       return JSON.parse(value, this.parseDateReviver);
     });
+    return tickets;
   }
 
   getTicket(barcode) {

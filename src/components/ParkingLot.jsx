@@ -8,8 +8,8 @@ const ParkingLot = () => {
   const parkingSpots = Array.from({ length: 54 }, (place, i) => i + 1);
 
   const TopRow = (start, end) => {
-    return parkingSpots.slice(start, end).map((placeNumber) => (
-      <ParkingSpot key={placeNumber} number={placeNumber} />
+    return parkingSpots.slice(start, end).map((spotNumber) => (
+      <ParkingSpot key={spotNumber} number={spotNumber} />
     ));
   };
 
@@ -18,8 +18,8 @@ const ParkingLot = () => {
       <>
         <div className='blank-top' />
         <div className='blank' />
-        {parkingSpots.slice(start, end).map((placeNumber) => (
-          <ParkingSpot key={placeNumber} number={placeNumber} />
+        {parkingSpots.slice(start, end).map((spotNumber) => (
+          <ParkingSpot key={spotNumber} number={spotNumber} />
         ))}
         <PaymentComponent />
       </>
@@ -31,8 +31,8 @@ const ParkingLot = () => {
       <>
         <div className='blank' />
         <div className='blank' />
-        {parkingSpots.slice(start, end).map((placeNumber) => (
-          <ParkingSpot key={placeNumber} number={placeNumber} />
+        {parkingSpots.slice(start, end).map((spotNumber) => (
+          <ParkingSpot key={spotNumber} number={spotNumber} />
         ))}
         <Counter />
       </>
@@ -40,8 +40,8 @@ const ParkingLot = () => {
   };
 
   const BottomRow = (start, end) => {
-    return parkingSpots.slice(start, end).map((placeNumber) => (
-      <ParkingSpot key={placeNumber} number={placeNumber} />
+    return parkingSpots.slice(start, end).map((spotNumber) => (
+      <ParkingSpot key={spotNumber} number={spotNumber} />
     ));
   };
 

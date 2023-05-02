@@ -5,9 +5,15 @@ export class PaymentService {
   static shared = new PaymentService();
   ticketSrvc = TicketService.shared;
   pricePerHour = 2.0;
+  paymentGracePeriodInMinutes = 15
+
+  getTicket(barcode) {
+    const tickets = this.ticketSrvc.getAllTickets();
+    return tickets.find((ticket) => ticket.barcode === barcode);
+  }
 
   calculatePrice(barcode) {
-    const ticket = this.ticketSrvc.getTicket(barcode);
+    const ticket = this.getTicket(barcode);
     if (!ticket) {
       return null;
     }
@@ -23,7 +29,7 @@ export class PaymentService {
     const timeDifferenceInMinutes = timeDifferenceInMilliseconds / (1000 * 60);
     const timeDifferenceInHours = timeDifferenceInMilliseconds / (1000 * 60 * 60);
 
-    if (lastReceipt !== null && timeDifferenceInMinutes < 15) {
+    if (lastReceipt !== null && timeDifferenceInMinutes < this.paymentGracePeriodInMinutes) {
       return [0, lastReceipt];
     }
 
@@ -34,8 +40,8 @@ export class PaymentService {
 
   payTicket(barcode, paymentMethod) {
     const [price, lastReceipt] = this.calculatePrice(barcode);
-    const ticket = this.ticketSrvc.getTicket(barcode);
-    if (price === 0 || lastReceipt !== null) {
+    const ticket = this.getTicket(barcode);
+    if (price === 0) {
       return ticket;
     }
     ticket.receipts.push(
@@ -51,19 +57,32 @@ export class PaymentService {
 
   getTicketState(barcode) {
     const result = this.calculatePrice(barcode);
-    if (result !== null) {
-      let [price, receipt] = result;
-      if (receipt) {
-        return "PAID";
-      } else {
-        return "UNPAID";
-      }
-    } else {
-      return null;
+    if (result === null) {
+      return null
     }
+    let [price, _] = result;
+    if (price === 0) {
+      return "PAID";
+    } else {
+      return "UNPAID";
+    }
+  }
+
+  getPaymentInfo(barcode) {
+    const ticket = this.getTicket(barcode);
+    if (ticket && ticket.receipts.length > 0) {
+      const lastReceipt = ticket.receipts[ticket.receipts.length - 1];
+      return {
+        paymentMethod: lastReceipt.paymentMethod,
+        paidAmount: lastReceipt.amount,
+      };
+    }
+    return null;
   }
 
   getAvailablePaymentMethods() {
     return ['CASH', 'Credit Card', 'Debit Card'];
   }
 }
+
+window.paymentService = PaymentService.shared;

@@ -5,17 +5,13 @@ import './PaymentComponent.css';
 const PaymentComponent = () => {
   const parkingService = useContext(ParkingServiceContext);
   const [unpaidTickets, setUnpaidTickets] = useState([]);
-  const [freeSpaces, setFreeSpaces] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState('');
   const [selectedTicketBarcode, setSelectedTicketBarcode] = useState('');
 
   useEffect(() => {
-    // Define a function to update the unpaidTickets state with the current unpaid tickets
     const updateOnParkingSrvcStateChange = () => {
-      setUnpaidTickets(parkingService.getUnpaidTickets());
-      setFreeSpaces(parkingService.getFreeSpaces());
       const tickets = parkingService.getUnpaidTickets();
-      setUnpaidTickets([...tickets]);
+      setUnpaidTickets(tickets);
     };
 
     updateOnParkingSrvcStateChange();
@@ -32,7 +28,7 @@ const PaymentComponent = () => {
 
   return (
     <div className="payment-component">
-      <h2>Payment Component</h2>
+      <p>Parking Machine</p>
       <select className="select"
         value={selectedTicketBarcode} onChange={(e) => setSelectedTicketBarcode(e.target.value)}>
         <option value="">Select a ticket to pay</option>
@@ -40,8 +36,7 @@ const PaymentComponent = () => {
           <option 
             key={index} 
             value={ticket.barcode}>
-            {ticket.barcode} 
-            {parkingService.calculatePrice(ticket.barcode)}
+            Spot: {ticket.parkingSpot} Price: ${parkingService.calculatePrice(ticket.barcode)[0]}
           </option>
         ))}
       </select>
@@ -55,15 +50,7 @@ const PaymentComponent = () => {
         ))}
       </select>
       <button onClick={handlePay} disabled={!selectedTicketBarcode || !paymentMethod}>Pay Ticket</button>
-      <h3>Unpaid Tickets {unpaidTickets.length} </h3>
-      <div>
-        {unpaidTickets.map((ticket, index) => (
-          <div key={index}>
-            Barcode: {ticket.barcode} - price:
-            {parkingService.calculatePrice(ticket.barcode)}
-          </div>
-        ))}
-      </div>
+      <p>Unpaid Tickets: {unpaidTickets.length} </p>
     </div>
   );
 };

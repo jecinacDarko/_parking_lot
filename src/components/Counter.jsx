@@ -19,10 +19,8 @@ const Counter = () => {
 
   return (
     <div className='counter'>
-      <h1>Free Spaces </h1> 
-      <div className="counter-numbers">
+      <p>Available Spots: </p> 
         {freeSpaces}
-      </div>
     </div>
   );
 };

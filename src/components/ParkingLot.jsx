@@ -1,13 +1,15 @@
 import React from 'react';
 import ParkingSpot from './ParkingSpot';
+import PaymentComponent from './PaymentComponent';
+import Counter from './Counter';
 import './ParkingLot.css';
 
 const ParkingLot = () => {
   const parkingSpots = Array.from({ length: 54 }, (place, i) => i + 1);
 
   const TopRow = (start, end) => {
-    return parkingSpots.slice(start, end).map((placeNumber) => (
-      <ParkingSpot key={placeNumber} number={placeNumber} />
+    return parkingSpots.slice(start, end).map((spotNumber) => (
+      <ParkingSpot key={spotNumber} number={spotNumber} />
     ));
   };
 
@@ -16,11 +18,10 @@ const ParkingLot = () => {
       <>
         <div className='blank-top' />
         <div className='blank' />
-        {parkingSpots.slice(start, end).map((placeNumber) => (
-          <ParkingSpot key={placeNumber} number={placeNumber} />
+        {parkingSpots.slice(start, end).map((spotNumber) => (
+          <ParkingSpot key={spotNumber} number={spotNumber} />
         ))}
-        <div className='blank' />
-        <div className='blank' />
+        <PaymentComponent />
       </>
     );
   };
@@ -30,18 +31,17 @@ const ParkingLot = () => {
       <>
         <div className='blank' />
         <div className='blank' />
-        {parkingSpots.slice(start, end).map((placeNumber) => (
-          <ParkingSpot key={placeNumber} number={placeNumber} />
+        {parkingSpots.slice(start, end).map((spotNumber) => (
+          <ParkingSpot key={spotNumber} number={spotNumber} />
         ))}
-        <div className='blank' />
-        <div className='blank' />
+        <Counter />
       </>
     );
   };
 
   const BottomRow = (start, end) => {
-    return parkingSpots.slice(start, end).map((placeNumber) => (
-      <ParkingSpot key={placeNumber} number={placeNumber} />
+    return parkingSpots.slice(start, end).map((spotNumber) => (
+      <ParkingSpot key={spotNumber} number={spotNumber} />
     ));
   };
 
